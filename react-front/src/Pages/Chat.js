@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, ButtonGroup, Heading } from "@chakra-ui/react";
 
 function Chat() {
   const [chat, setChat] = useState([]);
@@ -14,7 +13,6 @@ function Chat() {
   }, []);
   return (
     <>
-      <Heading>Chat page</Heading>
       {chat.map((val, ind) => {
         return (
           <div key={ind}>
