@@ -12,8 +12,8 @@ function Home() {
             <p>Let's Talk Live</p>
           </div>
           <div
-            className="bg-white rounded rounded-2 p-1"
-            style={{ height: "65vh" }}
+            className=" rounded rounded-2 p-1"
+            style={{ backgroundColor: "#c7ecee" }}
           >
             <ul
               className="nav nav-pills mb-3 d-flex justify-content-center w-75 mx-auto"

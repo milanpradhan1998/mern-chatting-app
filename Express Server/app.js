@@ -1,16 +1,22 @@
-const { request, response } = require("express");
+const { request, response, json } = require("express");
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const colors = require("colors");
 const chats = require("./data/data");
 const { default: mongoose } = require("mongoose");
+// API ROUTES
+const userRouter = require("./Routes/userRoutes");
+// Error Handler
+const { notFound, errorHandler } = require("./Middlewares/errorMiddlewares");
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 7700;
 
 // cors enable
 app.use(cors());
+//json enable
+app.use(express.json());
 //Mongo DB url
 const MONGODB_URI =
   "mongodb+srv://Admin:768028@mymongodb.ltaknvt.mongodb.net/ChatApp?retryWrites=true&w=majority";
@@ -30,6 +36,13 @@ app.get("/api/chat/:id", (request, response) => {
   console.log(singleChat);
   response.send(singleChat);
 });
+
+//user-Routes api
+app.use("/api/user", userRouter);
+
+// Error Handler
+app.use(notFound);
+app.use(errorHandler);
 
 //Mongoose connection
 mongoose
