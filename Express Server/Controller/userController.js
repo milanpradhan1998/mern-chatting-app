@@ -55,3 +55,19 @@ module.exports.authUser = asyncHandler(async (request, response) => {
     throw new Error("Password Not match");
   }
 });
+
+//allUser
+module.exports.allUsers = asyncHandler(async (request, response) => {
+  const keywords = request.query.search
+    ? {
+        $or: [
+          { name: { $regex: request.query.search, $options: "i" } },
+          { email: { $regex: request.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const users = await User.find(keywords).find({
+    _id: { $ne: request.user._id },
+  });
+  response.status(200).send(users);
+});

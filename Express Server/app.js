@@ -7,6 +7,8 @@ const chats = require("./data/data");
 const { default: mongoose } = require("mongoose");
 // API ROUTES
 const userRouter = require("./Routes/userRoutes");
+// chat Router
+const chatsRouter = require("./Routes/chatRouts");
 // Error Handler
 const { notFound, errorHandler } = require("./Middlewares/errorMiddlewares");
 const app = express();
@@ -39,6 +41,8 @@ app.get("/api/chat/:id", (request, response) => {
 
 //user-Routes api
 app.use("/api/user", userRouter);
+// chat routs
+app.use("/api/chats", chatsRouter);
 
 // Error Handler
 app.use(notFound);
