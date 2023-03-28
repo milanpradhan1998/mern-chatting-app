@@ -7,6 +7,10 @@
   margin: 0px;
   box-sizing: border-box !important;
 }
+
+p {
+  margin-bottom: 0%;
+}
 /* COLOR BOX */
 .green-lt-bg {
   background-color: #00cec9 !important;
@@ -17,6 +21,10 @@
 .nav-link.active {
   background-color: #00cec9 !important;
 }
+.hover-bg-1:hover {
+  background-color: #00cec9 !important;
+}
+
 body {
   position: relative;
   /* height: 100vh;
@@ -51,4 +59,37 @@ body {
 footer {
   margin-top: auto;
   background-color: rgba(58, 58, 58, 0.454);
+}
+/* SIDE BAR JS */
+.side-bar-main {
+  position: fixed;
+  z-index: 10;
+  height: 100vh;
+  width: 300px;
+  left: 0px;
+  transition: all 1s;
+}
+.side-bar-main-close {
+  left: -300px;
+  transition: all 1s;
+}
+.searched-user-list {
+  max-height: 75vh;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+/* SCROLL BAR */
+.searched-user-list::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.searched-user-list {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* RESPONSIVE MOBILE DEVICE CSS */
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  .side-nav-search-btn > i {
+    font-size: 24px;
+  }
 }

@@ -6,8 +6,9 @@ const chatsRouter = express.Router();
 
 chatsRouter.post("/", protect, Chat.accessChat);
 chatsRouter.get("/", protect, Chat.fetchChat);
-// chatsRouter.post("/group", protect, createGroupChat);
-// chatsRouter.put("/rename", protect, renameGroup); //rename by PUT request update data
-// chatsRouter.put("/remove", protect, removeFromGroup); //remove user from group
-// chatsRouter.put("/groupadd", protect, addToGroup); //Add user to group
+chatsRouter.post("/group", protect, Chat.createGroupChat);
+chatsRouter.put("/rename", protect, Chat.renameGroup); //rename by PUT request update data
+chatsRouter.put("/groupadd", protect, Chat.addToGroup); //Add user to group
+chatsRouter.put("/remove", protect, Chat.removeFromGroup); //remove user from group
+
 module.exports = chatsRouter;

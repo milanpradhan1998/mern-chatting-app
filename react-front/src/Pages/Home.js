@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Login from "../Components/Authentication/Login";
 import SingUp from "../Components/Authentication/SingUp";
+
 import Footer from "./footer";
 
 function Home() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+
+    if (user) {
+      navigate("/chats");
+    }
+  }, [navigate]);
   return (
     <>
       <section className="container-fluid mt-3 d-flex justify-content-center  home-box">

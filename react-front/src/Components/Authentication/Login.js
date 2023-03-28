@@ -34,13 +34,10 @@ const Login = () => {
       //verifying Email and Password.
       try {
         console.log(email, password, "ok");
-        let { data } = await axios.post(
-          "http://localhost:7700/api/user/login",
-          {
-            email,
-            password,
-          }
-        );
+        let { data } = await axios.post("/api/user/login", {
+          email,
+          password,
+        });
         console.log(data);
         setLoading(false);
         localStorage.setItem("userInfo", JSON.stringify(data));

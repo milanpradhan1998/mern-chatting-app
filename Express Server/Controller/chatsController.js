@@ -1,5 +1,7 @@
 const { request, response } = require("express");
 const asyncHandler = require("express-async-handler");
+const { Error } = require("mongoose");
+const { findByIdAndUpdate } = require("../Model/chatModel");
 const Chat = require("../Model/chatModel");
 const User = require("../Model/userModel");
 
@@ -63,4 +65,90 @@ module.exports.fetchChat = asyncHandler(async (request, response) => {
         response.status(200).send(result);
       });
   } catch (error) {}
+});
+
+// CREATE GROUP CHAT
+module.exports.createGroupChat = asyncHandler(async (request, response) => {
+  if (!request.body.users || !request.body.name) {
+    return response
+      .status(400)
+      .send({ message: "Please fill all the felids." });
+  }
+  var users = JSON.parse(request.body.users);
+  if (users.length < 2) {
+    return response
+      .status(400)
+      .send({ message: "More then 2 user require to form a group chat." });
+  }
+  users.push(request.user); //to add your shelf in the group chat. who has create the group.
+  try {
+    const groupChat = await Chat.create({
+      chatName: request.body.name,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: request.user,
+    });
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+    response.status(200).json(fullGroupChat);
+  } catch (error) {
+    response.status(400);
+    throw new Error(error.message);
+  }
+});
+
+// Rename Group
+module.exports.renameGroup = asyncHandler(async (request, response) => {
+  const { chatId, chatName } = request.body;
+  const updatedChat = await Chat.findByIdAndUpdate(
+    chatId,
+    { chatName },
+    {
+      new: true,
+    }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+  if (!updatedChat) {
+    response.status(404);
+    throw new Error("Chat not found");
+  } else {
+    response.json(updatedChat);
+  }
+});
+
+//Add USER To Group
+module.exports.addToGroup = asyncHandler(async (request, response) => {
+  const { chatId, userId } = request.body;
+  const added = await Chat.findByIdAndUpdate(
+    chatId,
+    { $push: { users: userId } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+  if (!added) {
+    response.status(404);
+    throw new Error("Chat not found");
+  } else {
+    response.json(added);
+  }
+});
+// Remove User From Group Chat
+module.exports.removeFromGroup = asyncHandler(async (request, response) => {
+  const { chatId, userId } = request.body;
+  const removed = await Chat.findByIdAndUpdate(
+    chatId,
+    { $pull: { users: userId } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+  if (!removed) {
+    response.status(404);
+    throw new Error("Chat not found");
+  } else {
+    response.json(removed);
+  }
 });

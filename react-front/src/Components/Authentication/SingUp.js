@@ -74,7 +74,7 @@ const SingUp = () => {
       return;
     }
     try {
-      let { data } = await axios.post("http://localhost:7700/api/user", {
+      let { data } = await axios.post("/api/user", {
         name,
         email,
         password,
